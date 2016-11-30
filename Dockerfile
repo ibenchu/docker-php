@@ -1,25 +1,26 @@
-FROM php:fpm
+FROM composer:composer
 MAINTAINER HuadongZuo <admin@zuohuadong.cn>
 RUN apt-get update
 
 # Install modules : GD mcrypt iconv
-RUN apt-get install -y \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libmcrypt-dev \
-        libpng12-dev \
-        libpq-dev \   
-        autoconf \
-        build-base \
-        curl \
-        git \
-        subversion \
-        freetype-dev \
-        openldap-dev \
-        make \
-        unzip \
-        wget \
-    && docker-php-ext-install iconv mcrypt \
+RUN \
+# RUN apt-get install -y \
+#         libfreetype6-dev \
+#         libjpeg62-turbo-dev \
+#         libmcrypt-dev \
+#         libpng12-dev \
+#         libpq-dev \   
+#         autoconf \
+#         build-base \
+#         curl \
+#         git \
+#         subversion \
+#         freetype-dev \
+#         openldap-dev \
+#         make \
+#         unzip \
+#         wget \
+    docker-php-ext-install iconv mcrypt \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd
 
