@@ -15,9 +15,6 @@ RUN apt-get install -y \
         git \
         subversion \
         freetype-dev \
-        libbz2 \
-        libstdc++ \
-        libxslt-dev \
         openldap-dev \
         make \
         unzip \
