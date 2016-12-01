@@ -9,7 +9,7 @@ RUN apt-get install -y \
         libmcrypt-dev \
         libpng12-dev \
         libpq-dev \     
-    && docker-php-ext-install iconv mcrypt \
+    && docker-php-ext-install iconv mcrypt ZipArchive\
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd
 
@@ -35,6 +35,7 @@ RUN docker-php-ext-enable redis
 RUN  mkdir /home/wwwroot && mkdir /home/log && mkdir /home/log/php
 RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/log.ini \
     && echo "error_log=/home/log/php" >> /usr/local/etc/php/conf.d/log.ini
+RUN usermod -u 1000 www-data
 RUN  chown -R www-data.www-data /home/wwwroot /home/log
 
 COPY php.ini /usr/local/etc/php/
