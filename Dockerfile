@@ -28,19 +28,20 @@ RUN docker-php-ext-install pdo_pgsql pgsql
 RUN pecl install swoole redis
 RUN docker-php-ext-enable swoole
 RUN docker-php-ext-enable redis
-RUN docker-php-ext-enable zip
+
 # log to /var/www/log
 # RUN mkdir -p /var/www/log
 # RUN echo "error_log = /var/www/log/php_error.log" > /usr/local/etc/php/conf.d/log.ini
 RUN  mkdir /home/wwwroot && mkdir /home/log && mkdir /home/log/php
 RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/log.ini \
     && echo "error_log=/home/log/php" >> /usr/local/etc/php/conf.d/log.ini
+RUN chown -R www-data:www-data  /home/wwwroot
 RUN usermod -u 1000 www-data
-
-WORKDIR /home/wwwroot
+RUN usermod -G staff www-data
 
 COPY php.ini /usr/local/etc/php/
 COPY php-fpm.conf /usr/local/etc/php/
+
 EXPOSE 9000 9501 9502 9503 9504 9505 9506 9507 9508 9509 9510
 # add user additional conf for apache & php
 # RUN echo "" >> /usr/local/php/conf.d/additional.ini
