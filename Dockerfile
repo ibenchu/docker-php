@@ -38,6 +38,7 @@ RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/log.ini \
 RUN chown -R www-data:www-data  /home/wwwroot
 RUN usermod -u 1000 www-data
 RUN usermod -G staff www-data
+WORKDIR /home/wwwroot
 
 COPY php.ini /usr/local/etc/php/
 COPY php-fpm.conf /usr/local/etc/php/
