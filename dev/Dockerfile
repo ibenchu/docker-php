@@ -4,7 +4,7 @@ MAINTAINER HuadongZuo <admin@zuohuadong.cn>
 #     apk upgrade
 RUN apk update
 # Install modules : GD mcrypt iconv
-RUN apk add --no-cache libmcrypt-dev zlib-dev postgresql-dev libpq freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
+RUN apk add --no-cache libmcrypt-dev zlib-dev autoconf postgresql-dev libpq freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
   docker-php-ext-configure gd \
     --with-gd \
     --with-zlib \
@@ -28,7 +28,7 @@ RUN docker-php-ext-install mcrypt zip iconv
 
 
 # install php pdo_mysql redis
-RUN docker-php-ext-install pdo_mysql mysqli iconv mbstring json mcrypt opcache fileinfo
+RUN docker-php-ext-install pdo_mysql mysqli mbstring json opcache fileinfo
 RUN echo "opcache.enable_cli=1" >>  /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
     # && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
 
