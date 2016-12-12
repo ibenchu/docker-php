@@ -4,7 +4,7 @@ MAINTAINER HuadongZuo <admin@zuohuadong.cn>
 #     apk upgrade
 RUN apk update
 # Install modules : GD mcrypt iconv
-RUN apk add --no-cache libmcrypt-dev zlib-dev autoconf postgresql-dev libpq freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
+RUN apk add --no-cache libmcrypt-dev build-base gcc g++ zlib-dev autoconf postgresql-dev libpq freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
   docker-php-ext-configure gd \
     --with-gd \
     --with-zlib \
