@@ -7,6 +7,7 @@ MAINTAINER HuadongZuo <admin@zuohuadong.cn>
 RUN apk --no-cache add libmcrypt-dev \
         build-base
         freetype \
+        freetype-dev \
         libjpeg-turbo-dev \
         libpng-dev \
         libpq \     
