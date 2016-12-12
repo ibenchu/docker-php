@@ -38,7 +38,7 @@ RUN docker-php-ext-install pdo_pgsql pgsql
 
 # install swoole
 RUN pecl install swoole redis
-RUN docker-php-ext-enable swoole
+# RUN docker-php-ext-enable swoole
 RUN docker-php-ext-enable redis
 
 # log to /var/www/log
