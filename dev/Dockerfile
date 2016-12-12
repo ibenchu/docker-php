@@ -4,7 +4,7 @@ RUN apk update && \
     apk upgrade
 
 # Install modules : GD mcrypt iconv
-# RUN apk add pecl \
+RUN apk add libmcrypt \
 # # build-base \
 # #         libfreetype6-dev \
 # #         libjpeg62-turbo-dev \
