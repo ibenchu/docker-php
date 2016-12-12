@@ -1,7 +1,7 @@
 FROM php:fpm-alpine
 MAINTAINER HuadongZuo <admin@zuohuadong.cn>
-RUN apk update && \
-    apk upgrade
+# RUN apk update && \
+#     apk upgrade
 
 # Install modules : GD mcrypt iconv
 RUN apk add libmcrypt \
@@ -13,7 +13,7 @@ RUN apk add libmcrypt \
 RUN docker-php-ext-install iconv mcrypt zip \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd
-
+ 
 
 
 # install php pdo_mysql redis
