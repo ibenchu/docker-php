@@ -22,7 +22,7 @@ RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev lib
 #         libpng-dev \
 #         libpq \     
 # RUN docker-php-ext-install 
-RUN docker-php-ext-install mcrypt zip iconv zlib \
+RUN docker-php-ext-install mcrypt zip iconv zlib
 
 
 
