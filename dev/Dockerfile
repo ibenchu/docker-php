@@ -4,12 +4,12 @@ MAINTAINER HuadongZuo <admin@zuohuadong.cn>
 #     apk upgrade
 
 # Install modules : GD mcrypt iconv
-RUN apk --no-cache add libmcrypt-dev
-# # build-base \
-# #         libfreetype6-dev \
-# #         libjpeg62-turbo-dev \
-# #         libpng12-dev \
-# #         libpq-dev \     
+RUN apk --no-cache add libmcrypt-dev \
+        build-base \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libpng12-dev \
+        libpq-dev \     
 RUN docker-php-ext-install iconv mcrypt zip \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd
