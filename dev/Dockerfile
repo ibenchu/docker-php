@@ -2,7 +2,7 @@ FROM php:fpm-alpine
 MAINTAINER HuadongZuo <admin@zuohuadong.cn>
 # RUN apk update && \
 #     apk upgrade
-
+RUN apk update
 # Install modules : GD mcrypt iconv
 RUN apk add --no-cache libmcrypt-dev php7-zlib zlib-dev freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
   docker-php-ext-configure gd \
