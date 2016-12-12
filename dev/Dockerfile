@@ -4,7 +4,7 @@ MAINTAINER HuadongZuo <admin@zuohuadong.cn>
 #     apk upgrade
 
 # Install modules : GD mcrypt iconv
-RUN apk add libmcrypt-dev
+RUN apk --no-cache add libmcrypt-dev
 # # build-base \
 # #         libfreetype6-dev \
 # #         libjpeg62-turbo-dev \
