@@ -6,10 +6,10 @@ MAINTAINER HuadongZuo <admin@zuohuadong.cn>
 # Install modules : GD mcrypt iconv
 RUN apk --no-cache add libmcrypt-dev \
         build-base
-        # libfreetype6-dev \
-        # libjpeg62-turbo-dev \
-        # libpng12-dev \
-        # libpq-dev \     
+        freetype-dev \
+        libjpeg-turbo-dev \
+        libpng-dev \
+        libpq \     
 RUN docker-php-ext-install iconv zlib
 RUN docker-php-ext-install mcrypt zip \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-zlib-dir=/usr/include/\
