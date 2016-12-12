@@ -10,7 +10,7 @@ RUN apk --no-cache add libmcrypt-dev \
         # libjpeg62-turbo-dev \
         # libpng12-dev \
         # libpq-dev \     
-RUN docker-php-ext-install iconv 
+RUN docker-php-ext-install iconv zlib
 RUN docker-php-ext-install mcrypt zip \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-zlib-dir=/usr/include/\
     && docker-php-ext-install gd
