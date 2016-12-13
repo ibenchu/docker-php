@@ -5,7 +5,7 @@ MAINTAINER HuadongZuo <admin@zuohuadong.cn>
 RUN echo "http://nl.alpinelinux.org/alpine/latest-stable/main" > /etc/apk/repositories \
 && echo "http://nl.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
 && echo "http://nl.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
-&& echo "nameserver 119.29.29.29" >> /etc/resolv.conf && apk update && apk upgrade \
+&& echo "nameserver 119.29.29.29" >> /etc/resolv.conf && apk update && apk upgrade
 # Install modules : GD mcrypt iconv
 RUN apk add --no-cache libmcrypt-dev build-base gcc g++ zlib-dev autoconf postgresql-dev libpq freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
   docker-php-ext-configure gd \
