@@ -5,9 +5,9 @@ MAINTAINER HuadongZuo <admin@zuohuadong.cn>
 RUN echo "http://nl.alpinelinux.org/alpine/latest-stable/main" > /etc/apk/repositories \
 && echo "http://nl.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
 && echo "http://nl.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
-&& echo "nameserver 119.29.29.29" >> /etc/resolv.conf && apk update && apk upgrade
+&& echo "nameserver 119.29.29.29" >> /etc/resolv.conf && apk update && apk upgrade && \
 # Install modules : GD mcrypt iconv
-RUN apk add --no-cache freetype-dev libwebp-dev libjpeg-turbo libpng-dev libjpeg-turbo-dev && \
+apk add --no-cache freetype-dev libwebp-dev libjpeg-turbo libpng-dev libjpeg-turbo-dev && \
   docker-php-ext-configure gd \
     --with-gd \
     # --with-zlib \
@@ -17,9 +17,9 @@ RUN apk add --no-cache freetype-dev libwebp-dev libjpeg-turbo libpng-dev libjpeg
     --with-jpeg-dir=/usr/include/ && \
   NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
   docker-php-ext-install -j${NPROC} gd && \
-  apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev
-RUN set -x && \
-    apk --no-cache add -t .build-deps \
+  apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev && \
+  set -x && \
+  apk --no-cache add -t .build-deps \
     libmcrypt-dev \
     build-base \
     linux-headers \
@@ -29,7 +29,7 @@ RUN set -x && \
     zlib-dev \
     autoconf \
     postgresql-dev \
-    libpq
+    libpq && \
     # freetype \
     
 # RUN apk --no-cache add libmcrypt-dev \
@@ -40,37 +40,32 @@ RUN set -x && \
 #         libpng-dev \
 #         libpq \     
 # RUN docker-php-ext-install 
-RUN docker-php-ext-install mcrypt zip iconv
+docker-php-ext-install mcrypt zip iconv && \
 
 
 
 # install php pdo_mysql redis
-RUN docker-php-ext-install pdo_mysql mysqli mbstring json opcache fileinfo
-RUN echo "opcache.enable_cli=1" >>  /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+docker-php-ext-install pdo_mysql mysqli mbstring json opcache fileinfo && \
+echo "opcache.enable_cli=1" >>  /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini &&\
     # && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
 
 # install php pdo_pgsql
-RUN docker-php-ext-install pdo_pgsql pgsql
+docker-php-ext-install pdo_pgsql pgsql && \
 
 
 # install swoole
-RUN pecl install redis
+pecl install redis swoole && \
 # RUN docker-php-ext-enable swoole
-RUN docker-php-ext-enable redis
+docker-php-ext-enable redis swoole && \
 
-RUN pecl install swoole
 
-RUN docker-php-ext-enable swoole
-# log to /var/www/log
 # RUN mkdir -p /var/www/log
 # RUN echo "error_log = /var/www/log/php_error.log" > /usr/local/etc/php/conf.d/log.ini
-RUN  mkdir /home/wwwroot && mkdir /home/log && mkdir /home/log/php
-RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/log.ini \
-    && echo "error_log=/home/log/php" >> /usr/local/etc/php/conf.d/log.ini
-RUN chown -R www-data:www-data  /home/wwwroot
-
-    # Clean-up.
-RUN cd && \
+mkdir /home/wwwroot && mkdir /home/log && mkdir /home/log/php && \
+echo "log_errors = On" >> /usr/local/etc/php/conf.d/log.ini && \
+echo "error_log=/home/log/php" >> /usr/local/etc/php/conf.d/log.ini && \
+chown -R www-data:www-data  /home/wwwroot && \
+    cd && \
     apk del .build-deps && \
     rm -rf /tmp/*
     # Forward request and error logs to docker log collector.
