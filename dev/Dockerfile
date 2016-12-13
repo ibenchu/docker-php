@@ -74,11 +74,7 @@ RUN cd && \
     apk del .build-deps && \
     rm -rf /tmp/* && \
     # Forward request and error logs to docker log collector.
-    ln -sf /dev/stdout /usr/local/openresty/nginx/logs/access.log && \
-    ln -sf /dev/stderr /usr/local/openresty/nginx/logs/error.log && \
-    # Make PageSpeed cache writable.
-    mkdir -p /var/cache/ngx_pagespeed && \
-    chmod -R o+wr /var/cache/ngx_pagespeed
+
 
 COPY php.ini /usr/local/etc/php/
 # COPY php-fpm.conf /usr/local/etc/php/
