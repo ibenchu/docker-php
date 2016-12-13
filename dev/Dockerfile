@@ -7,7 +7,7 @@ RUN echo "http://nl.alpinelinux.org/alpine/latest-stable/main" > /etc/apk/reposi
 && echo "http://nl.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
 && echo "nameserver 119.29.29.29" >> /etc/resolv.conf && apk update && apk upgrade
 # Install modules : GD mcrypt iconv
-RUN apk add --no-cache libmcrypt-dev build-base linux-headers libaio gcc g++ zlib-dev autoconf postgresql-dev libpq freetype libpng libwebp libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
+RUN apk add --no-cache libwebp-dev libjpeg-turbo libpng-dev libjpeg-turbo-dev && \
   docker-php-ext-configure gd \
     --with-gd \
     # --with-zlib \
@@ -17,8 +17,21 @@ RUN apk add --no-cache libmcrypt-dev build-base linux-headers libaio gcc g++ zli
     --with-jpeg-dir=/usr/include/ && \
   NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
   docker-php-ext-install -j${NPROC} gd && \
-  apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
-
+  apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev
+RUN set -x && \
+    apk --no-cache add -t .build-deps \
+    libmcrypt-dev \
+    build-base \
+    linux-headers \
+    libaio \
+    gcc \
+    g++ \
+    zlib-dev \
+    autoconf \
+    postgresql-dev \
+    libpq \
+    freetype \
+    freetype-dev
 # RUN apk --no-cache add libmcrypt-dev \
 #         build-base
 #         freetype \
@@ -56,7 +69,16 @@ RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/log.ini \
     && echo "error_log=/home/log/php" >> /usr/local/etc/php/conf.d/log.ini
 RUN chown -R www-data:www-data  /home/wwwroot
 
-
+    # Clean-up.
+RUN cd && \
+    apk del .build-deps && \
+    rm -rf /tmp/* && \
+    # Forward request and error logs to docker log collector.
+    ln -sf /dev/stdout /usr/local/openresty/nginx/logs/access.log && \
+    ln -sf /dev/stderr /usr/local/openresty/nginx/logs/error.log && \
+    # Make PageSpeed cache writable.
+    mkdir -p /var/cache/ngx_pagespeed && \
+    chmod -R o+wr /var/cache/ngx_pagespeed
 
 COPY php.ini /usr/local/etc/php/
 # COPY php-fpm.conf /usr/local/etc/php/
