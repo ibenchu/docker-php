@@ -1,43 +1,68 @@
-FROM php:fpm
+FROM php:fpm-alpine
 MAINTAINER HuadongZuo <admin@zuohuadong.cn>
-RUN apt-get update
-
+# RUN apk update && \
+#     apk upgrade
+RUN echo "http://nl.alpinelinux.org/alpine/latest-stable/main" > /etc/apk/repositories \
+&& echo "http://nl.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
+&& echo "http://nl.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
+&& echo "nameserver 119.29.29.29" >> /etc/resolv.conf && apk update && apk upgrade && \
 # Install modules : GD mcrypt iconv
-RUN apt-get install -y \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libmcrypt-dev \
-        libpng12-dev \
-        libpq-dev \     
-    && docker-php-ext-install iconv mcrypt zip \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install gd
+apk add --no-cache libmcrypt-dev  libaio  zlib-dev postgresql-dev libpq freetype-dev autoconf libwebp-dev libjpeg-turbo libpng-dev libjpeg-turbo-dev && \
+  docker-php-ext-configure gd \
+    --with-gd \
+    # --with-zlib \
+    --with-freetype-dir=/usr/include/ \
+    --with-png-dir=/usr/include/ \
+    --with-webp-dir=/usr/include/ \
+    --with-jpeg-dir=/usr/include/ && \
+  NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
+  docker-php-ext-install -j${NPROC} gd && \
+  # apk del --no-cache libpng-dev libjpeg-turbo-dev libwebp-dev
+  set -x && \
+  apk --no-cache add -t .build-deps \
+    build-base \
+    linux-headers \
+    gcc \
+    g++ && \
+    # freetype \
+    
+# RUN apk --no-cache add libmcrypt-dev \
+#         build-base
+#         freetype \
+#         freetype-dev \
+#         libjpeg-turbo-dev \
+#         libpng-dev \
+#         libpq \     
+# RUN docker-php-ext-install 
+docker-php-ext-install mcrypt zip iconv && \
 
 
 
 # install php pdo_mysql redis
-RUN docker-php-ext-install pdo_mysql mysqli iconv mbstring json mcrypt opcache fileinfo
-RUN echo "opcache.enable_cli=1" >>  /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+docker-php-ext-install pdo_mysql mysqli mbstring json opcache fileinfo && \
+echo "opcache.enable_cli=1" >>  /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini &&\
     # && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
 
 # install php pdo_pgsql
-RUN docker-php-ext-install pdo_pgsql pgsql
+docker-php-ext-install pdo_pgsql pgsql && \
 
 
 # install swoole
-RUN pecl install swoole redis
-RUN docker-php-ext-enable swoole
-RUN docker-php-ext-enable redis
+pecl install redis swoole && \
+# RUN docker-php-ext-enable swoole
+docker-php-ext-enable redis swoole && \
 
-# log to /var/www/log
+
 # RUN mkdir -p /var/www/log
 # RUN echo "error_log = /var/www/log/php_error.log" > /usr/local/etc/php/conf.d/log.ini
-RUN  mkdir /home/wwwroot && mkdir /home/log && mkdir /home/log/php
-RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/log.ini \
-    && echo "error_log=/home/log/php" >> /usr/local/etc/php/conf.d/log.ini
-RUN chown -R www-data:www-data  /home/wwwroot
-RUN usermod -u 1000 www-data
-RUN usermod -G staff www-data
+mkdir /home/wwwroot && mkdir /home/log && mkdir /home/log/php && \
+echo "log_errors = On" >> /usr/local/etc/php/conf.d/log.ini && \
+echo "error_log=/home/log/php" >> /usr/local/etc/php/conf.d/log.ini && \
+chown -R www-data:www-data  /home/wwwroot && \
+cd && \
+apk del .build-deps && \
+rm -rf /tmp/*
+    # Forward request and error logs to docker log collector.
 
 
 COPY php.ini /usr/local/etc/php/
