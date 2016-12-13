@@ -10,7 +10,7 @@ RUN echo "http://nl.alpinelinux.org/alpine/latest-stable/main" > /etc/apk/reposi
 RUN apk add --no-cache libmcrypt-dev build-base gcc g++ zlib-dev autoconf postgresql-dev libpq freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
   docker-php-ext-configure gd \
     --with-gd \
-    --with-zlib \
+    # --with-zlib \
     --with-freetype-dir=/usr/include/ \
     --with-png-dir=/usr/include/ \
     --with-jpeg-dir=/usr/include/ && \
