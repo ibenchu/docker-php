@@ -45,6 +45,7 @@ RUN pecl install redis
 RUN docker-php-ext-enable redis
 
 RUN pecl install swoole
+    docker-php-ext-configure swoole --with-php-config=/usr/local/php/bin/php-config
 
 RUN docker-php-ext-enable swoole
 # log to /var/www/log
