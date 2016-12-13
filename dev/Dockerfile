@@ -17,7 +17,7 @@ apk add --no-cache libmcrypt-dev freetype-dev autoconf libwebp-dev libjpeg-turbo
     --with-jpeg-dir=/usr/include/ && \
   NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
   docker-php-ext-install -j${NPROC} gd && \
-  apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev && \
+  apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev
 RUN set -x && \
   apk --no-cache add -t .build-deps \
     build-base \
