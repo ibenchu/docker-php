@@ -2,6 +2,7 @@ FROM php:fpm-alpine
 MAINTAINER HuadongZuo <admin@zuohuadong.cn>
 # RUN apk update && \
 #     apk upgrade
+RUN usermod -u 1000 www-data
 RUN echo "http://nl.alpinelinux.org/alpine/latest-stable/main" > /etc/apk/repositories \
 && echo "http://nl.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
 && echo "http://nl.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
@@ -63,7 +64,7 @@ cd && \
 apk del .build-deps && \
 rm -rf /tmp/*
     # Forward request and error logs to docker log collector.
-RUN usermod -u 1000 www-data
+
 
 COPY php.ini /usr/local/etc/php/
 # COPY php-fpm.conf /usr/local/etc/php/
