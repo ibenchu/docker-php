@@ -17,8 +17,8 @@ apk add --no-cache libmcrypt-dev  libaio  zlib-dev postgresql-dev libpq freetype
     --with-jpeg-dir=/usr/include/ && \
   NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
   docker-php-ext-install -j${NPROC} gd && \
-  apk del --no-cache libpng-dev libjpeg-turbo-dev libwebp-dev
-RUN set -x && \
+  # apk del --no-cache libpng-dev libjpeg-turbo-dev libwebp-dev
+  set -x && \
   apk --no-cache add -t .build-deps \
     build-base \
     linux-headers \
