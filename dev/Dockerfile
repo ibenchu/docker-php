@@ -72,7 +72,7 @@ RUN chown -R www-data:www-data  /home/wwwroot
     # Clean-up.
 RUN cd && \
     apk del .build-deps && \
-    rm -rf /tmp/* && \
+    rm -rf /tmp/*
     # Forward request and error logs to docker log collector.
 
 
