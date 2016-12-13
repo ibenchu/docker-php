@@ -55,7 +55,7 @@ docker-php-ext-enable redis swoole && \
 
 # RUN mkdir -p /var/www/log
 # RUN echo "error_log = /var/www/log/php_error.log" > /usr/local/etc/php/conf.d/log.ini
-mkdir /home/wwwroot && mkdir /home/log && mkdir /home/log/php && \
+mkdir -p /home/wwwroot && mkdir -p /home/log && mkdir -p /home/log/php && \
 echo "log_errors = On" >> /usr/local/etc/php/conf.d/log.ini && \
 echo "error_log=/home/log/php" >> /usr/local/etc/php/conf.d/log.ini && \
 chown -R www-data:www-data  /home/wwwroot && \
@@ -63,7 +63,7 @@ cd && \
 apk del .build-deps && \
 rm -rf /tmp/*
     # Forward request and error logs to docker log collector.
-
+RUN usermod -u 1000 www-data
 
 COPY php.ini /usr/local/etc/php/
 # COPY php-fpm.conf /usr/local/etc/php/
