@@ -2,13 +2,13 @@ FROM php:fpm-alpine
 MAINTAINER HuadongZuo <admin@zuohuadong.cn>
 # RUN apk update && \
 #     apk upgrade
-RUN usermod -u 1000 www-data
+
 RUN echo "http://nl.alpinelinux.org/alpine/latest-stable/main" > /etc/apk/repositories \
 && echo "http://nl.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
 && echo "http://nl.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
 && echo "nameserver 119.29.29.29" >> /etc/resolv.conf && apk update && apk upgrade && \
 # Install modules : GD mcrypt iconv
-apk add --no-cache libmcrypt-dev  libaio  zlib-dev postgresql-dev libpq freetype-dev autoconf libwebp-dev libjpeg-turbo libpng-dev libjpeg-turbo-dev && \
+apk add --no-cache libmcrypt-dev  shadow libaio  zlib-dev postgresql-dev libpq freetype-dev autoconf libwebp-dev libjpeg-turbo libpng-dev libjpeg-turbo-dev && \
   docker-php-ext-configure gd \
     --with-gd \
     # --with-zlib \
@@ -26,34 +26,17 @@ apk add --no-cache libmcrypt-dev  libaio  zlib-dev postgresql-dev libpq freetype
     gcc \
     g++ && \
     # freetype \
-    
-# RUN apk --no-cache add libmcrypt-dev \
-#         build-base
-#         freetype \
-#         freetype-dev \
-#         libjpeg-turbo-dev \
-#         libpng-dev \
-#         libpq \     
-# RUN docker-php-ext-install 
 docker-php-ext-install mcrypt zip iconv && \
-
-
-
 # install php pdo_mysql redis
 docker-php-ext-install pdo_mysql mysqli mbstring json opcache fileinfo && \
 echo "opcache.enable_cli=1" >>  /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini &&\
     # && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
-
 # install php pdo_pgsql
 docker-php-ext-install pdo_pgsql pgsql && \
-
-
 # install swoole
 pecl install redis swoole && \
 # RUN docker-php-ext-enable swoole
 docker-php-ext-enable redis swoole && \
-
-
 # RUN mkdir -p /var/www/log
 # RUN echo "error_log = /var/www/log/php_error.log" > /usr/local/etc/php/conf.d/log.ini
 mkdir -p /home/wwwroot && mkdir -p /home/log && mkdir -p /home/log/php && \
@@ -65,7 +48,7 @@ apk del .build-deps && \
 rm -rf /tmp/*
     # Forward request and error logs to docker log collector.
 
-
+RUN usermod -u 1000 www-data
 COPY php.ini /usr/local/etc/php/
 # COPY php-fpm.conf /usr/local/etc/php/
 
