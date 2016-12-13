@@ -7,7 +7,7 @@ RUN echo "http://nl.alpinelinux.org/alpine/latest-stable/main" > /etc/apk/reposi
 && echo "http://nl.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
 && echo "nameserver 119.29.29.29" >> /etc/resolv.conf && apk update && apk upgrade
 # Install modules : GD mcrypt iconv
-RUN apk add --no-cache libmcrypt-dev build-base gcc g++ zlib-dev autoconf postgresql-dev libpq freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
+RUN apk add --no-cache libmcrypt-dev build-base linx-headers libaio-dev gcc g++ zlib-dev autoconf postgresql-dev libpq freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
   docker-php-ext-configure gd \
     --with-gd \
     # --with-zlib \
@@ -45,7 +45,6 @@ RUN pecl install redis
 RUN docker-php-ext-enable redis
 
 RUN pecl install swoole
-    docker-php-ext-configure swoole --with-php-config=/usr/local/php/bin/php-config
 
 RUN docker-php-ext-enable swoole
 # log to /var/www/log
