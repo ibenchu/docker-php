@@ -8,7 +8,7 @@ RUN echo "http://nl.alpinelinux.org/alpine/latest-stable/main" > /etc/apk/reposi
 && echo "http://nl.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
 && echo "nameserver 119.29.29.29" >> /etc/resolv.conf && apk update && apk upgrade && \
 # Install modules : GD mcrypt iconv
-apk add --no-cache libmcrypt-dev  shadow libaio  zlib-dev postgresql-dev libpq freetype-dev autoconf libwebp-dev libjpeg-turbo libpng-dev libjpeg-turbo-dev && \
+apk add --no-cache libmcrypt-dev  freetds-dev shadow libaio  zlib-dev postgresql-dev libpq freetype-dev autoconf libwebp-dev libjpeg-turbo libpng-dev libjpeg-turbo-dev && \
   docker-php-ext-configure gd \
     --with-gd \
     # --with-zlib \
