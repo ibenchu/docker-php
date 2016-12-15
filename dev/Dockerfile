@@ -40,7 +40,7 @@ docker-php-ext-install mcrypt zip iconv && \
 
 
 # install php pdo_mysql redis
-docker-php-ext-install pdo_mysql mysqli mbstring json opcache fileinfo && \
+docker-php-ext-install pdo_mysql pdo_dblib mysqli mbstring json opcache fileinfo && \
 echo "opcache.enable_cli=1" >>  /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini &&\
     # && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
 
